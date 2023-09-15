@@ -1,1 +1,1 @@
-json.application @application_name
+json.application_name @application_name
