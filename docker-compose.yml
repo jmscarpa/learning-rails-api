@@ -1,0 +1,37 @@
+version: "3.1"
+
+services:
+  app:
+    container_name: rails-api
+    image: rails-api
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/project
+      - gems:/.gems
+    environment:
+      - SECRET_KEY_BASE=development
+      - RAILS_ENV=development
+      - DATABASE_NAME=rails-api
+      - DATABASE_HOST=postgres
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - API_HOST=http://localhost:3000/
+    stdin_open: true
+    tty: true
+    ports:
+      - 3000:3000
+    command: rails s -b 0.0.0.0 -p 3000
+  postgres:
+    image: postgres:13.0-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres:
+  gems:
