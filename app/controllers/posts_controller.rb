@@ -1,8 +1,9 @@
 class PostsController < ApplicationController
+
+  before_action :authenticated?
   
   def index
-    @show_id = false
-    @posts = Post.all
+    @posts = Feed.new(current_user).posts
   end
 
   def show
