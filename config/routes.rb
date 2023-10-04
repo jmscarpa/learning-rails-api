@@ -3,7 +3,8 @@ Rails.application.routes.draw do
     resource :follows, only: [:create, :destroy]
   end
 
-  resources :posts, only: [:index, :show]
+  resources :posts
+  resources :hashtags, only: [:index, :show]
 
   resource :profiles, only: [:show]
 end

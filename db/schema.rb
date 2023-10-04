@@ -10,18 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_03_221516) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_04_002132) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "categories", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "slug", null: false
+  create_table "hashtags", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_hashtags_on_name", unique: true
   end
 
-  create_table "posts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "post_hashtags", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "hashtag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hashtag_id"], name: "index_post_hashtags_on_hashtag_id"
+    t.index ["post_id"], name: "index_post_hashtags_on_post_id"
+  end
+
+  create_table "posts", force: :cascade do |t|
     t.string "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -46,6 +55,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_03_221516) do
     t.string "email"
   end
 
+  add_foreign_key "post_hashtags", "hashtags"
+  add_foreign_key "post_hashtags", "posts"
   add_foreign_key "posts", "users"
   add_foreign_key "user_follows", "users"
   add_foreign_key "user_follows", "users", column: "followed_user_id"

@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   validates :username, presence: true, uniqueness: true
 
+
   # @param [User] user
   def follow(user)
     user_follows.create(followed_user: user) unless follows?(user)
