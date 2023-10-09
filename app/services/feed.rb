@@ -7,7 +7,8 @@ class Feed
   end
 
   def posts
-    Post.where(user_id: user.followed_users).order(created_at: :desc)
+    ids = user.followed_users.pluck(:id) << user.id
+    Post.where(user_id: ids).order(created_at: :desc)
   end
 
   def posts_with_hashtag(hashtag)

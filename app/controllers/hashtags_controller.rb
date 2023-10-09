@@ -1,6 +1,6 @@
 class HashtagsController < ApplicationController
   def index
-    @hashtags = Hashtag.all.with_count
+    @hashtags = Hashtag.with_count
   end
 
   def show

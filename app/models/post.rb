@@ -1,15 +1,14 @@
 class Post < ApplicationRecord
-  has_many :post_hashtags
-  has_many :hashtags, through: :post_hashtags
-
   belongs_to :user
+  has_and_belongs_to_many :hashtags
   after_save :save_hashtags
 
   private
+  
   def save_hashtags
-    body.scan(/#\w+/).map{|hashtag| hashtag.tr("#", "")}.each do |name|
+    body.hashtags.each do |name|
       hashtag = Hashtag.find_or_create_by(name: name)
-      PostHashtag.find_or_create_by(post: self, hashtag: hashtag)
+      hashtags << hashtag unless hashtags.include?(hashtag)
     end
   end
 end

@@ -1,7 +1,11 @@
 class Hashtag < ApplicationRecord
-  has_many :post_hashtags
-  has_many :posts, through: :post_hashtags
+  has_and_belongs_to_many :posts
 
-  scope :with_count, -> { joins(:posts).select("hashtags.*, count(posts.id) as count").group("hashtags.id") }
+  scope :with_count, -> { joins(:posts).select("hashtags.*, count(posts.id) as posts_count").group("hashtags.id") }
+
+  def to_s
+    name
+  end
+
 end
 
